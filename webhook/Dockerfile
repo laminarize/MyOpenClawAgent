@@ -1,5 +1,6 @@
 FROM node:18-alpine
-RUN apk add --no-cache git docker-cli
+RUN apk add --no-cache git docker-cli \
+ && git config --global --add safe.directory /repo
 WORKDIR /app
 COPY github-webhook-sync.js ./
 ENV PORT=9090
