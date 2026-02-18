@@ -1,17 +1,37 @@
-# MyOpenClawAgent
+# MyOpenClawAgent 🤖
 
-A scalable, production-ready web platform for AI agent assistance.
+> **This website was created by an AI agent** — showcasing the power of OpenClaw to build, deploy, and operate autonomous agents.
 
-## Features
+## About This Website
 
-- 🌐 **Web Interface** - Clean, responsive chat UI
-- 🔒 **Security** - Rate limiting, abuse detection, input sanitization
-- ⚡ **Performance** - nginx reverse proxy, caching, compression
-- 📈 **Scalable** - Docker-based, horizontal scaling ready
-- 🔄 **WebSocket** - Real-time streaming support
-- 🛡️ **Abuse Prevention** - Configurable middleware
+**MyOpenClawAgent** is a platform built and operated by **George** (an OpenClaw agent) on behalf of **Josh Holtz**.
 
-## Quick Start
+### Our Mission
+
+We exist to help people discover and set up their own OpenClaw agents. Whether you're a developer, business owner, or curious learner — we believe AI agents are the future of productivity.
+
+### What We Offer
+
+- 📚 **Blog** — Knowledge sharing, best practices, and tutorials for OpenClaw
+- 💼 **Professional Services** — Schedule appointments with Josh Holtz for OpenClaw consulting, setup assistance, and custom agent development
+- 🛠️ **Live Demo** — See an OpenClaw agent in action
+
+## About OpenClaw
+
+OpenClaw is an open-source framework for building and deploying autonomous AI agents. It supports multiple messaging platforms, powerful tool access, and flexible agent architectures.
+
+## Tech Stack
+
+This website demonstrates production-grade architecture:
+
+- 🌐 **nginx** — Reverse proxy, caching, security headers
+- ⚡ **Express.js API** — Scalable, secure backend
+- 🔒 **Security** — Rate limiting, abuse detection, input sanitization
+- 🐳 **Docker** — Containerized for easy deployment
+- 🔄 **WebSocket** — Real-time streaming
+- 📈 **Redis** — Session management
+
+## Quick Start (Self-Hosted)
 
 ```bash
 # Clone and navigate to project
@@ -19,9 +39,6 @@ cd myopenclawagent
 
 # Start with Docker Compose
 docker-compose up -d
-
-# View logs
-docker-compose logs -f
 
 # Scale API instances
 docker-compose up -d --scale api=3
@@ -50,75 +67,33 @@ docker-compose up -d --scale api=3
 └─────────────┘
 ```
 
-
 ## API Endpoints
 
 ### Public
-- `GET /health` - Health check
-- `GET /api/v1/status` - Service status
+- `GET /health` — Health check
+- `GET /api/v1/status` — Service status
 
 ### Chat
-- `POST /api/v1/chat` - Send message
-- `GET /api/v1/chat/history/:sessionId` - Get history
+- `POST /api/v1/chat` — Send message
+- `GET /api/v1/chat/history/:sessionId` — Get history
 
 ### Agents
-- `POST /api/v1/agent/spawn` - Spawn agent
-- `GET /api/v1/agent/:id` - Get agent status
-- `DELETE /api/v1/agent/:id` - Terminate agent
+- `POST /api/v1/agent/spawn` — Spawn agent
+- `GET /api/v1/agent/:id` — Get agent status
+- `DELETE /api/v1/agent/:id` — Terminate agent
 
 ## Security Features
 
-1. **Rate Limiting** - Per-IP and per-session limits
-2. **Abuse Detection** - Pattern matching, user agent analysis
-3. **Input Sanitization** - XSS, injection prevention
-4. **Security Headers** - CSP, HSTS, X-Frame-Options
-5. **SSL/TLS** - Ready for HTTPS deployment
+- **Rate Limiting** — Per-IP and per-session limits
+- **Abuse Detection** — Pattern matching, user agent analysis
+- **Input Sanitization** — XSS, injection prevention
+- **Security Headers** — CSP, HSTS, X-Frame-Options
 
-## Abuse Prevention Configuration
+## Contact
 
-Edit `api/src/middleware/rateLimiter.js` to adjust:
-- Request limits
-- Time windows
-- Endpoint-specific rules
+- **Josh Holtz** — Owner & Principal Consultant
+- **George** — AI Agent (this website's operator)
 
-Edit `api/src/middleware/abuseDetector.js` to customize:
-- Bad user agent filters
-- Suspicious pattern detection
-- Blocking thresholds
+---
 
-## Scaling
-
-```bash
-# Scale API horizontally
-docker-compose up -d --scale api=5
-
-# Add load balancer (nginx upstream)
-# Edit nginx/sites/myopenclawagent.conf
-```
-
-## SSL/TLS Setup
-
-1. Generate certificates:
-```bash
-openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-  -keyout nginx/ssl/key.pem \
-  -out nginx/ssl/cert.pem
-```
-
-2. Uncomment SSL server block in `nginx/sites/myopenclawagent.conf`
-
-3. Enable HSTS header
-
-## Development
-
-```bash
-# Development mode
-cd api && npm run dev
-
-# Or with Docker
-docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
-```
-
-## License
-
-MIT
+*Built by AI. Operated by humans. Powered by OpenClaw.*
