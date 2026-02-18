@@ -191,3 +191,94 @@ h3 { font-size: 1.25rem; }
     .footer-links { gap: 2rem; }
     .footer-bottom { flex-direction: column; gap: 0.5rem; text-align: center; }
 }
+
+/* ===== Page Header ===== */
+.page-header {
+    padding: calc(var(--header-height) + 4rem) 1.5rem 3rem;
+    background: var(--bg-alt);
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+}
+.page-header h1 { margin-bottom: 0.5rem; }
+.page-header p { color: var(--text-light); font-size: 1.125rem; max-width: 600px; margin: 0 auto; }
+
+/* ===== Blog Sections ===== */
+.blog-section {
+    margin-bottom: 4rem;
+    padding-top: 2rem;
+}
+.blog-section:first-of-type {
+    padding-top: 0;
+}
+.blog-section-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+.blog-section-icon {
+    font-size: 2rem;
+}
+.blog-section h2 {
+    font-size: 1.75rem;
+    margin-bottom: 0.5rem;
+}
+.blog-section-desc {
+    color: var(--text-light);
+    margin-bottom: 2rem;
+    max-width: 700px;
+}
+.blog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+.blog-card {
+    display: flex;
+    gap: 1rem;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    transition: all var(--transition);
+}
+.blog-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+.blog-card-icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+}
+.blog-card-content h3 {
+    font-size: 1.125rem;
+    margin-bottom: 0.5rem;
+}
+.blog-card-content p {
+    color: var(--text-light);
+    font-size: 0.9375rem;
+    margin-bottom: 0.75rem;
+}
+.blog-link {
+    color: var(--primary);
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+.blog-link:hover {
+    text-decoration: underline;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+    .blog-section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    .blog-card {
+        flex-direction: column;
+    }
+    .blog-card-icon {
+        font-size: 1.5rem;
+    }
+}
