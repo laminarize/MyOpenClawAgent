@@ -17,6 +17,20 @@ services:
       - /var/log/nginx-myopenclawagent:/var/log/nginx
     depends_on:
       - api
+      - webhook
+    networks:
+      - openclawnet
+    restart: unless-stopped
+
+  webhook:
+    build: ./webhook
+    environment:
+      - GITHUB_WEBHOOK_SECRET=${GITHUB_WEBHOOK_SECRET:-}
+      - REPO_PATH=/repo
+      - PORT=9090
+    volumes:
+      - .:/repo
+      - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - openclawnet
     restart: unless-stopped
