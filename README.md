@@ -50,16 +50,6 @@ docker-compose up -d --scale api=3
 └─────────────┘
 ```
 
-## Environment Variables
-
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `PORT` | API port | `3000` |
-| `REDIS_URL` | Redis connection | - |
-| `RATE_LIMIT_WINDOW` | Rate limit window (ms) | `60000` |
-| `RATE_LIMIT_MAX` | Max requests per window | `100` |
-| `ADMIN_KEY` | Admin API key | `changeme` |
-| `ALLOWED_ORIGINS` | CORS origins | `localhost:3000` |
 
 ## API Endpoints
 
