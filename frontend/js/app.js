@@ -29,6 +29,16 @@
         });
     }
 
+    // Mobile menu toggle
+    window.toggleMenu = function() {
+        const nav = document.getElementById('main-nav');
+        const btn = document.querySelector('.mobile-menu-btn');
+        if (nav && btn) {
+            nav.classList.toggle('active');
+            btn.classList.toggle('active');
+        }
+    };
+
     async function handleSubmit(e) {
         e.preventDefault();
         if (isSending) return;
