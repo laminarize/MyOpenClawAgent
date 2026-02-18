@@ -4,208 +4,148 @@
     'use strict';
 
     // Configuration
-    const API_BASE = '';
-    const WS_ENDPOINT = '/ws';
+    const API_BASE = '/api/v1';
 
     // State
     let sessionId = null;
-    let ws = null;
-    let isConnected = false;
     let isSending = false;
 
     // DOM Elements
-    const chatForm = document.getElementById('chat-form');
-    const chatInput = document.getElementById('chat-input');
-    const chatMessages = document.getElementById('chat-messages');
-    const chatStatus = document.getElementById('chat-status');
-    const navLinks = document.querySelectorAll('.nav-link');
-    const pages = document.querySelectorAll('.page');
+    const contactForm = document.getElementById('contact-form');
+    const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+    const nav = document.querySelector('.nav');
 
     // Initialize
     function init() {
         setupEventListeners();
-        connectWebSocket();
+        animateOnScroll();
     }
 
     // Event Listeners
     function setupEventListeners() {
-        // Navigation
-        navLinks.forEach(link => {
-            link.addEventListener('click', handleNavigation);
-        });
+        // Mobile menu toggle
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+        }
 
-        // Chat form
-        chatForm.addEventListener('submit', handleSubmit);
-        
-        // Auto-resize textarea
-        chatInput.addEventListener('input', autoResize);
-        
-        // Enter to send (Shift+Enter for newline)
-        chatInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
+        // Contact form submission
+        if (contactForm) {
+            contactForm.addEventListener('submit', handleContactSubmit);
+        }
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
                 e.preventDefault();
-                chatForm.dispatchEvent(new Event('submit'));
-            }
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const headerOffset = 80;
+                    const elementPosition = target.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
         });
+
+        // Navbar background on scroll
+        window.addEventListener('scroll', handleScroll);
     }
 
-    // Handle navigation
-    function handleNavigation(e) {
+    // Toggle mobile menu
+    function toggleMobileMenu() {
+        nav.classList.toggle('active');
+        mobileMenuBtn.classList.toggle('active');
+    }
+
+    // Handle scroll
+    function handleScroll() {
+        const header = document.querySelector('.header');
+        if (window.scrollY > 50) {
+            header.style.boxShadow = 'var(--shadow)';
+        } else {
+            header.style.boxShadow = 'none';
+        }
+    }
+
+    // Handle contact form submission
+    async function handleContactSubmit(e) {
         e.preventDefault();
-        const page = e.target.dataset.page;
         
-        navLinks.forEach(link => link.classList.remove('active'));
-        e.target.classList.add('active');
-        
-        pages.forEach(p => p.classList.remove('active'));
-        document.getElementById(`${page}-page`).classList.add('active');
-    }
+        if (isSending) return;
 
-    // Auto-resize textarea
-    function autoResize() {
-        chatInput.style.height = 'auto';
-        chatInput.style.height = Math.min(chatInput.scrollHeight, 150) + 'px';
-    }
+        const formData = new FormData(contactForm);
+        const data = {
+            name: formData.get('name'),
+            email: formData.get('email'),
+            service: formData.get('service'),
+            message: formData.get('message')
+        };
 
-    // Handle form submission
-    async function handleSubmit(e) {
-        e.preventDefault();
-        
-        const message = chatInput.value.trim();
-        if (!message || isSending) return;
-        
-        // Clear input
-        chatInput.value = '';
-        autoResize();
-        
-        // Add user message
-        addMessage(message, 'user');
-        
-        // Send to API
-        await sendMessage(message);
-    }
-
-    // Add message to chat
-    function addMessage(content, role) {
-        const messageEl = document.createElement('div');
-        messageEl.className = `message ${role}`;
-        
-        const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        
-        messageEl.innerHTML = `
-            <div class="message-content">
-                <p>${escapeHtml(content).replace(/\n/g, '<br>')}</p>
-            </div>
-            <span class="message-time">${time}</span>
-        `;
-        
-        chatMessages.appendChild(messageEl);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
-
-    // Send message to API
-    async function sendMessage(message) {
         isSending = true;
-        updateStatus('Sending...', 'sending');
-        
+        const submitBtn = contactForm.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = 'Sending...';
+        submitBtn.disabled = true;
+
         try {
-            const response = await fetch(`${API_BASE}/api/v1/chat`, {
+            // Try to send via API
+            const response = await fetch(`${API_BASE}/contact`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({
-                    message,
-                    sessionId
-                })
+                body: JSON.stringify(data)
             });
-            
-            if (!response.ok) {
-                throw new Error(`HTTP ${response.status}`);
+
+            if (response.ok) {
+                alert('Thank you for your message! We\'ll get back to you soon.');
+                contactForm.reset();
+            } else {
+                throw new Error('Failed to send');
             }
-            
-            const data = await response.json();
-            
-            // Update session ID
-            if (data.sessionId && !sessionId) {
-                sessionId = data.sessionId;
-            }
-            
-            // Add assistant response
-            if (data.message) {
-                addMessage(data.message.content, 'assistant');
-            }
-            
-            updateStatus('', '');
         } catch (error) {
-            console.error('Send error:', error);
-            updateStatus('Failed to send message. Please try again.', 'error');
-            addMessage('Sorry, I encountered an error. Please try again.', 'assistant');
+            // Fallback: open mailto
+            const subject = encodeURIComponent(`New Contact: ${data.service || 'General'}`);
+            const body = encodeURIComponent(`Name: ${data.name}\nEmail: ${data.email}\n\nMessage:\n${data.message}`);
+            window.location.href = `mailto:josh@myopenclawagent.com?subject=${subject}&body=${body}`;
         } finally {
             isSending = false;
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
         }
     }
 
-    // Update status
-    function updateStatus(text, type) {
-        chatStatus.textContent = text;
-        chatStatus.className = 'chat-status ' + type;
+    // Animate elements on scroll
+    function animateOnScroll() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-fade-in');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        // Observe sections
+        document.querySelectorAll('.section, .hero-content, .hero-visual').forEach(el => {
+            observer.observe(el);
+        });
     }
 
-    // WebSocket connection
-    function connectWebSocket() {
-        const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-        const wsUrl = `${protocol}//${window.location.host}${WS_ENDPOINT}`;
-        
-        ws = new WebSocket(wsUrl);
-        
-        ws.onopen = () => {
-            isConnected = true;
-            console.log('WebSocket connected');
-        };
-        
-        ws.onmessage = (event) => {
-            try {
-                const data = JSON.parse(event.data);
-                handleWsMessage(data);
-            } catch (e) {
-                console.error('WebSocket parse error:', e);
-            }
-        };
-        
-        ws.onclose = () => {
-            isConnected = false;
-            console.log('WebSocket disconnected');
-            // Reconnect after 5 seconds
-            setTimeout(connectWebSocket, 5000);
-        };
-        
-        ws.onerror = (error) => {
-            console.error('WebSocket error:', error);
-        };
-    }
-
-    // Handle WebSocket messages
-    function handleWsMessage(data) {
-        switch (data.type) {
-            case 'ack':
-                // Message acknowledged
-                break;
-            case 'response':
-                // Streaming response
-                addMessage(data.content, 'assistant');
-                break;
-            case 'error':
-                updateStatus(data.message, 'error');
-                break;
-        }
-    }
-
-    // Escape HTML
-    function escapeHtml(text) {
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
+    // Smooth scroll polyfill for older browsers
+    if (!CSS.supports('scroll-behavior', 'smooth')) {
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
     }
 
     // Initialize on DOM ready
