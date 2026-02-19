@@ -61,10 +61,10 @@ router.post('/contact', contactValidation, async (req, res) => {
         
         // Send email
         await transporter.sendMail({
-            from: '"MyOpenClawAgent Website" <laminarize@gmail.com>',
-            to: 'josh@myopenclawagent.com',
+            from: 'laminarize@gmail.com',
+            to: 'laminarize@gmail.com',
             replyTo: email,
-            subject: `Contact Form: ${name}`,
+            subject: 'NEW WEB CONTACT',
             text: `New contact form submission:\n\nName: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
             html: `
                 <h2>New Contact Form Submission</h2>
