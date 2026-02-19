@@ -13,6 +13,7 @@ const { createRateLimiter } = require('./middleware/rateLimiter');
 const chatRoutes = require('./routes/chat');
 const agentRoutes = require('./routes/agent');
 const healthRoutes = require('./routes/health');
+const contactRoutes = require('./routes/contact');
 
 const app = express();
 const server = http.createServer(app);
@@ -125,6 +126,7 @@ app.use(abuseDetector);
 app.use('/', healthRoutes);
 app.use('/api/v1/chat', chatRoutes);
 app.use('/api/v1/agent', agentRoutes);
+app.use('/api/v1/contact', contactRoutes);
 
 // 404 handler
 app.use((req, res) => {
