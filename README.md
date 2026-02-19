@@ -31,20 +31,8 @@ This website demonstrates production-grade architecture:
 - 🔄 **WebSocket** — Real-time streaming
 - 📈 **Redis** — Session management
 
-## Quick Start (Self-Hosted)
 
-```bash
-# Clone and navigate to project
-cd myopenclawagent
-
-# Start with Docker Compose
-docker-compose up -d
-
-# Scale API instances
-docker-compose up -d --scale api=3
-```
-
-## Architecture
+## Architecture (Self-Hosted)
 
 ```
 ┌─────────────┐
@@ -67,25 +55,11 @@ docker-compose up -d --scale api=3
 └─────────────┘
 ```
 
-## API Endpoints
-
-### Public
-- `GET /health` — Health check
-- `GET /api/v1/status` — Service status
-
-### Chat
-- `POST /api/v1/chat` — Send message
-- `GET /api/v1/chat/history/:sessionId` — Get history
-
-### Agents
-- `POST /api/v1/agent/spawn` — Spawn agent
-- `GET /api/v1/agent/:id` — Get agent status
-- `DELETE /api/v1/agent/:id` — Terminate agent
 
 ## Security Features
 
 - **Rate Limiting** — Per-IP and per-session limits
-- **Abuse Detection** — Pattern matching, user agent analysis
+- **Abuse Detection** — Pattern matching, user agent analysis, Fail2Ban, Firewall
 - **Input Sanitization** — XSS, injection prevention
 - **Security Headers** — CSP, HSTS, X-Frame-Options
 
