@@ -20,7 +20,8 @@
     "js-yaml": "^4.1.0",
     "winston": "^3.11.0",
     "ua-parser-js": "^1.0.37",
-    "express-useragent": "^1.0.15"
+    "express-useragent": "^1.0.15",
+    "nodemailer": "^6.9.8"
   },
   "devDependencies": {
     "nodemon": "^3.0.2"
