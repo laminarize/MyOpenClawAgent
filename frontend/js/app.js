@@ -14,6 +14,16 @@
             contactForm.addEventListener('submit', handleSubmit);
         }
         
+        // Initialize character counts
+        ['name', 'email', 'message'].forEach(field => {
+            const input = document.getElementById(field);
+            const countId = field + '-count';
+            if (input && countId) {
+                const max = field === 'message' ? 250 : 100;
+                updateCharCount(countId, input.value.length, max);
+            }
+        });
+        
         // Smooth scroll for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
@@ -28,6 +38,15 @@
             });
         });
     }
+
+    // Update character count display
+    window.updateCharCount = function(elementId, current, max) {
+        const el = document.getElementById(elementId);
+        if (el) {
+            el.textContent = current + ' / ' + max;
+            el.classList.toggle('at-limit', current >= max);
+        }
+    };
 
     // Mobile menu toggle
     window.toggleMenu = function() {
@@ -49,6 +68,19 @@
             email: formData.get('email'),
             message: formData.get('message')
         };
+
+        // Frontend validation: check character limits
+        const nameLen = data.name.length;
+        const emailLen = data.email.length;
+        const messageLen = data.message.length;
+        
+        if (nameLen > 100 || emailLen > 100 || messageLen > 250) {
+            alert('Please reduce the length of the following fields:\n' +
+                (nameLen > 100 ? '- Name must be 100 characters or less\n' : '') +
+                (emailLen > 100 ? '- Email must be 100 characters or less\n' : '') +
+                (messageLen > 250 ? '- Message must be 250 characters or less\n' : ''));
+            return;
+        }
 
         isSending = true;
         const btn = contactForm.querySelector('button[type="submit"]');

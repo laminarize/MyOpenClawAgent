@@ -4,6 +4,12 @@ const { body, validationResult } = require('express-validator');
 
 const router = express.Router();
 
+// Character limits
+const MAX_NAME_LENGTH = 100;
+const MAX_EMAIL_LENGTH = 100;
+const MAX_MESSAGE_LENGTH = 250;
+
+// Contact form validation
 const contactValidation = [
     body('name').trim().notEmpty().withMessage('Name is required'),
     body('email').isEmail().withMessage('Valid email is required'),
@@ -26,6 +32,18 @@ router.post('/', contactValidation, async (req, res) => {
             return res.status(400).json({ success: false, errors: errors.array() });
         }
 
+        const { name, email, message } = req.body;
+
+        // Validate character limits (block direct API calls circumventing frontend)
+        if (name.length > MAX_NAME_LENGTH || email.length > MAX_EMAIL_LENGTH || message.length > MAX_MESSAGE_LENGTH) {
+            console.error('Character limit violation:', { nameLen: name.length, emailLen: email.length, messageLen: message.length });
+            return res.status(500).json({
+                success: false,
+                error: 'Internal server error'
+            });
+        }
+
+        // Get Resend client
         let resend;
         try {
             resend = getResend();
@@ -36,8 +54,6 @@ router.post('/', contactValidation, async (req, res) => {
                 error: 'Email service not configured. Please try again later.'
             });
         }
-
-        const { name, email, message } = req.body;
 
         // Respond to client immediately; send email in background
         res.json({ success: true, message: 'Message sent successfully!' });
