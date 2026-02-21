@@ -70,10 +70,7 @@
                 throw new Error('Failed');
             }
         } catch (error) {
-            // Fallback to email
-            const subject = encodeURIComponent('New Contact - MyOpenClawAgent');
-            const body = encodeURIComponent(`Name: ${data.name}\nEmail: ${data.email}\n\nMessage:\n${data.message}`);
-            window.location.href = `mailto:josh@myopenclawagent.com?subject=${subject}&body=${body}`;
+            console.log('Email submission error', error);
         } finally {
             isSending = false;
             btn.textContent = originalText;

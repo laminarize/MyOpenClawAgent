@@ -40,10 +40,14 @@ services:
     environment:
       - NODE_ENV=production
       - PORT=3000
-      - REDIS_URL=${REDIS_URL:-}
+      - REDIS_URL=${REDIS_URL:-redis://redis:6379}
       - RATE_LIMIT_WINDOW=60000
       - RATE_LIMIT_MAX=100
       - ADMIN_KEY=${ADMIN_KEY:-changeme}
+      # Contact form via Resend API (https://resend.com) — set RESEND_API_KEY in .env
+      - RESEND_API_KEY=${RESEND_API_KEY:-}
+      # CORS: comma-separated origins that may call the API (e.g. https://myopenclawagent.com,https://www.myopenclawagent.com)
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-https://myopenclawagent.com,https://www.myopenclawagent.com}
     depends_on:
       - redis
     networks:

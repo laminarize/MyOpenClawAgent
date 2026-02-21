@@ -9,11 +9,14 @@ const http = require('http');
 const { securityMiddleware } = require('./middleware/security');
 const { abuseDetector } = require('./middleware/abuseDetector');
 const { createRateLimiter } = require('./middleware/rateLimiter');
+const { trafficLogger } = require('./middleware/trafficLogger');
 
 const chatRoutes = require('./routes/chat');
 const agentRoutes = require('./routes/agent');
 const healthRoutes = require('./routes/health');
 const contactRoutes = require('./routes/contact');
+const { sessionStore } = require('./services/sessionStore');
+const { disconnect: redisDisconnect } = require('./lib/redis');
 
 const app = express();
 const server = http.createServer(app);
@@ -122,6 +125,9 @@ app.use(slowDown({
 // Abuse detection
 app.use(abuseDetector);
 
+// Traffic logging to Redis (counters + unique IPs)
+app.use(trafficLogger);
+
 // Routes
 app.use('/', healthRoutes);
 app.use('/api/v1/chat', chatRoutes);
@@ -149,8 +155,10 @@ app.use((err, req, res, next) => {
 });
 
 // Graceful shutdown
-process.on('SIGTERM', () => {
+process.on('SIGTERM', async () => {
     console.log('SIGTERM received, closing server...');
+    sessionStore.shutdown();
+    await redisDisconnect();
     server.close(() => {
         console.log('Server closed');
         process.exit(0);
@@ -158,6 +166,8 @@ process.on('SIGTERM', () => {
 });
 
 const PORT = process.env.PORT || 3000;
+
+sessionStore.init();
 
 server.listen(PORT, '0.0.0.0', () => {
     console.log(`API server running on port ${PORT}`);

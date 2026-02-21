@@ -1,57 +1,61 @@
 const rateLimit = require('express-rate-limit');
+const { RedisStore } = require('rate-limit-redis');
+const { getClient } = require('../lib/redis');
 
-// Configurable rate limiter
-const createRateLimiter = () => {
+function createRedisStore(prefix) {
+    const client = getClient();
+    if (!client) return undefined;
+    return new RedisStore({
+        sendCommand: (command, ...args) => client.call(command, ...args),
+        prefix,
+    });
+}
+
+function createRateLimiter() {
     const windowMs = parseInt(process.env.RATE_LIMIT_WINDOW || '60000', 10);
     const maxRequests = parseInt(process.env.RATE_LIMIT_MAX || '100', 10);
-    
-    // General API rate limiter
+
+    const baseOptions = (prefix, overrides = {}) => {
+        const store = createRedisStore(prefix);
+        return {
+            windowMs: overrides.windowMs || windowMs,
+            max: overrides.max ?? maxRequests,
+            standardHeaders: true,
+            legacyHeaders: false,
+            ...(store && { store }),
+            ...overrides,
+        };
+    };
+
     const generalLimiter = rateLimit({
-        windowMs,
-        max: maxRequests,
+        ...baseOptions('rl:general:'),
         message: {
             error: 'Too many requests, please try again later.',
-            retryAfter: Math.ceil(windowMs / 1000)
+            retryAfter: Math.ceil(windowMs / 1000),
         },
-        standardHeaders: true,
-        legacyHeaders: false,
         keyGenerator: (req) => {
-            // Use IP + user ID if authenticated
-            return req.user?.id 
-                ? `${req.ip}:${req.user.id}` 
-                : req.ip;
+            return req.user?.id ? `${req.ip}:${req.user.id}` : req.ip;
         },
         skip: (req) => {
-            // Skip rate limiting for health checks
             return req.path === '/health' || req.path === '/api/v1/status';
-        }
+        },
     });
 
-    // Stricter limiter for auth endpoints
     const authLimiter = rateLimit({
-        windowMs: 15 * 60 * 1000, // 15 minutes
-        max: 10, // 10 attempts
+        ...baseOptions('rl:auth:', { windowMs: 15 * 60 * 1000, max: 10 }),
         message: {
-            error: 'Too many authentication attempts, please try again later.'
+            error: 'Too many authentication attempts, please try again later.',
         },
-        standardHeaders: true,
-        legacyHeaders: false,
     });
 
-    // Very strict limiter for admin endpoints
     const adminLimiter = rateLimit({
-        windowMs: 60 * 1000, // 1 minute
-        max: 30,
+        ...baseOptions('rl:admin:', { windowMs: 60 * 1000, max: 30 }),
         message: {
-            error: 'Admin rate limit exceeded.'
+            error: 'Admin rate limit exceeded.',
         },
-        standardHeaders: true,
-        legacyHeaders: false,
     });
 
-    // Apply general limiter to all routes
     return (req, res, next) => {
-        // Route-specific limiters
         if (req.path.startsWith('/api/v1/auth/')) {
             return authLimiter(req, res, next);
         }
@@ -60,6 +64,6 @@ const createRateLimiter = () => {
         }
         return generalLimiter(req, res, next);
     };
-};
+}
 
 module.exports = { createRateLimiter };

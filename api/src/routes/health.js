@@ -1,5 +1,6 @@
 const express = require('express');
 const os = require('os');
+const { getClient, ping } = require('../lib/redis');
 
 const router = express.Router();
 
@@ -16,7 +17,8 @@ router.get('/api/v1/status', async (req, res) => {
     try {
         const memUsage = process.memoryUsage();
         const cpuLoad = os.loadavg();
-        
+        const redisStatus = getClient() ? await ping() : { ok: false, error: 'not configured' };
+
         const status = {
             status: 'operational',
             timestamp: new Date().toISOString(),
@@ -34,17 +36,16 @@ router.get('/api/v1/status', async (req, res) => {
                     cores: os.cpus().length
                 },
                 requests: {
-                    // These would be tracked metrics in production
                     active: 0,
                     total: 0
                 }
             },
             services: {
-                redis: 'connected', // Would check actual connection
+                redis: redisStatus.ok ? 'connected' : (redisStatus.error || 'disconnected'),
                 websocket: 'active'
             }
         };
-        
+
         res.json(status);
     } catch (error) {
         res.status(500).json({ 
