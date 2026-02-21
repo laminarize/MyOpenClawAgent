@@ -4,6 +4,11 @@ const { body, validationResult } = require('express-validator');
 
 const router = express.Router();
 
+// Character limits
+const MAX_NAME_LENGTH = 100;
+const MAX_EMAIL_LENGTH = 100;
+const MAX_MESSAGE_LENGTH = 250;
+
 // Contact form validation
 const contactValidation = [
     body('name').trim().notEmpty().withMessage('Name is required'),
@@ -46,6 +51,15 @@ router.post('/contact', contactValidation, async (req, res) => {
         }
         
         const { name, email, message } = req.body;
+        
+        // Validate character limits (block direct API calls circumventing frontend)
+        if (name.length > MAX_NAME_LENGTH || email.length > MAX_EMAIL_LENGTH || message.length > MAX_MESSAGE_LENGTH) {
+            console.error('Character limit violation:', { nameLen: name.length, emailLen: email.length, messageLen: message.length });
+            return res.status(500).json({
+                success: false,
+                error: 'Internal server error'
+            });
+        }
         
         // Get transporter
         let transporter;
