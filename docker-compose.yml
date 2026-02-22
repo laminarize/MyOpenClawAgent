@@ -27,6 +27,8 @@ services:
     environment:
       - GITHUB_WEBHOOK_SECRET=${GITHUB_WEBHOOK_SECRET:-}
       - REPO_PATH=/repo
+      # Host path to this repo so one-off "docker compose up -d --build" runs in the right place
+      - HOST_REPO_PATH=${HOST_REPO_PATH:-/root/myopenclawagent}
       - PORT=9090
     volumes:
       - .:/repo

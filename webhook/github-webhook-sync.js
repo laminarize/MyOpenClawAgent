@@ -1,11 +1,12 @@
 #!/usr/bin/env node
 /**
- * Minimal GitHub webhook receiver: on push to main, runs `git pull` in REPO_PATH.
+ * Minimal GitHub webhook receiver: on push to main, runs `git pull` then `docker compose up -d --build`.
  * Uses only Node built-ins. Safe for public repos (no self-hosted runner).
  *
  * Env:
  *   GITHUB_WEBHOOK_SECRET  - Secret you set in GitHub webhook (required)
  *   REPO_PATH             - Directory to run git pull in (default: /repo when run in Docker)
+ *   HOST_REPO_PATH        - Host path to repo for one-off compose (required in Docker: e.g. /root/myopenclawagent)
  *   PORT                  - Port to listen on (default: 9090)
  */
 const http = require('http');
@@ -15,6 +16,7 @@ const path = require('path');
 
 const SECRET = process.env.GITHUB_WEBHOOK_SECRET;
 const REPO_PATH = process.env.REPO_PATH || path.resolve(path.join(__dirname, '..'));
+const HOST_REPO_PATH = process.env.HOST_REPO_PATH || REPO_PATH;
 const PORT = Number(process.env.PORT) || 9090;
 
 function verifySignature(body, signature) {
@@ -25,25 +27,34 @@ function verifySignature(body, signature) {
   return a.length === b.length && crypto.timingSafeEqual(a, b);
 }
 
-function restartServices(cb) {
-  // Run compose from a one-off container so api + nginx pick up new code (needs Docker socket mount)
-  const cmd = `docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v ${REPO_PATH}:${REPO_PATH} -w ${REPO_PATH} docker.io/docker/compose:v2 -f docker-compose.yml restart api nginx`;
-  exec(cmd, { timeout: 60000 }, (err, stdout, stderr) => {
-    if (err) console.error('restart failed:', err, stderr);
-    else if (stdout) console.log(stdout.trim());
+function rebuildAndUp(cb) {
+  // Run compose from a one-off container so api + nginx pick up new code (needs Docker socket mount).
+  // Use HOST_REPO_PATH so the one-off runs in the same directory as "docker compose up" on the host.
+  const cmd = `docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v ${HOST_REPO_PATH}:${HOST_REPO_PATH} -w ${HOST_REPO_PATH} docker.io/docker/compose:v2 -f docker-compose.yml up -d --build`;
+  console.log('[webhook] Running: docker compose up -d --build in', HOST_REPO_PATH);
+  exec(cmd, { timeout: 120000 }, (err, stdout, stderr) => {
+    if (err) {
+      console.error('[webhook] compose up --build failed:', err, stderr || '');
+      if (cb) cb();
+      return;
+    }
+    if (stdout) console.log('[webhook] compose:', stdout.trim());
+    console.log('[webhook] compose up -d --build completed successfully');
     if (cb) cb();
   });
 }
 
 function pull(cb) {
+  console.log('[webhook] Running: git pull origin main in', REPO_PATH);
   exec('git pull origin main', { cwd: REPO_PATH }, (err, stdout, stderr) => {
     if (err) {
-      console.error('git pull failed:', err, stderr);
+      console.error('[webhook] git pull failed:', err, stderr || '');
       if (cb) cb();
       return;
     }
-    if (stdout) console.log(stdout.trim());
-    restartServices(cb);
+    if (stdout) console.log('[webhook] git pull:', stdout.trim());
+    console.log('[webhook] git pull completed successfully');
+    rebuildAndUp(cb);
   });
 }
 
@@ -85,10 +96,12 @@ const server = http.createServer((req, res) => {
       }
     }
     if (payload.ref !== 'refs/heads/main') {
+      console.log('[webhook] Ignoring push to', payload.ref || '?', '(not main)');
       res.writeHead(200, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ ok: true, skipped: 'not main' }));
       return;
     }
+    console.log('[webhook] Push to main received, starting git pull + compose up --build');
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({ ok: true, pulled: 'scheduled' }));
     pull();
@@ -101,5 +114,5 @@ if (!SECRET) {
 }
 
 server.listen(PORT, '0.0.0.0', () => {
-  console.log(`GitHub webhook sync listening on port ${PORT}, REPO_PATH=${REPO_PATH}`);
+  console.log(`GitHub webhook sync listening on port ${PORT}, REPO_PATH=${REPO_PATH}, HOST_REPO_PATH=${HOST_REPO_PATH}`);
 });
