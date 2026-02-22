@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   nginx:
     build: ./nginx
@@ -29,6 +27,8 @@ services:
       - REPO_PATH=/repo
       # Host path to this repo so one-off "docker compose up -d --build" runs in the right place
       - HOST_REPO_PATH=${HOST_REPO_PATH:-/root/myopenclawagent}
+      # HTTPS URL for git pull (avoids SSH in container); for private repo use https://TOKEN@github.com/owner/repo.git
+      - GIT_PULL_URL=${GIT_PULL_URL:-https://github.com/laminarize/MyOpenClawAgent.git}
       - PORT=9090
     volumes:
       - .:/repo
