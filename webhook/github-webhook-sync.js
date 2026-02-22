@@ -7,6 +7,7 @@
  *   GITHUB_WEBHOOK_SECRET  - Secret you set in GitHub webhook (required)
  *   REPO_PATH             - Directory to run git pull in (default: /repo when run in Docker)
  *   HOST_REPO_PATH        - Host path to repo for one-off compose (required in Docker: e.g. /root/myopenclawagent)
+ *   GIT_PULL_URL          - HTTPS clone URL for pull (avoids SSH in container; e.g. https://github.com/owner/repo.git)
  *   PORT                  - Port to listen on (default: 9090)
  */
 const http = require('http');
@@ -17,6 +18,7 @@ const path = require('path');
 const SECRET = process.env.GITHUB_WEBHOOK_SECRET;
 const REPO_PATH = process.env.REPO_PATH || path.resolve(path.join(__dirname, '..'));
 const HOST_REPO_PATH = process.env.HOST_REPO_PATH || REPO_PATH;
+const GIT_PULL_URL = process.env.GIT_PULL_URL || '';
 const PORT = Number(process.env.PORT) || 9090;
 
 function verifySignature(body, signature) {
@@ -28,11 +30,11 @@ function verifySignature(body, signature) {
 }
 
 function rebuildAndUp(cb) {
-  // Run compose from a one-off container so api + nginx pick up new code (needs Docker socket mount).
-  // Use HOST_REPO_PATH so the one-off runs in the same directory as "docker compose up" on the host.
-  const cmd = `docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v ${HOST_REPO_PATH}:${HOST_REPO_PATH} -w ${HOST_REPO_PATH} docker.io/docker/compose:v2 -f docker-compose.yml up -d --build`;
+  // docker-cli-compose plugin is installed in this container; Docker socket is mounted.
+  // Run compose directly with HOST_REPO_PATH as cwd so it finds docker-compose.yml and the correct context.
+  const cmd = `docker compose -f docker-compose.yml up -d --build`;
   console.log('[webhook] Running: docker compose up -d --build in', HOST_REPO_PATH);
-  exec(cmd, { timeout: 120000 }, (err, stdout, stderr) => {
+  exec(cmd, { cwd: HOST_REPO_PATH, timeout: 120000 }, (err, stdout, stderr) => {
     if (err) {
       console.error('[webhook] compose up --build failed:', err, stderr || '');
       if (cb) cb();
@@ -45,8 +47,10 @@ function rebuildAndUp(cb) {
 }
 
 function pull(cb) {
-  console.log('[webhook] Running: git pull origin main in', REPO_PATH);
-  exec('git pull origin main', { cwd: REPO_PATH }, (err, stdout, stderr) => {
+  // Use HTTPS URL when set so we don't need SSH in the container (avoids "cannot run ssh: No such file or directory")
+  const pullCmd = GIT_PULL_URL ? `git pull ${GIT_PULL_URL} main` : 'git pull origin main';
+  console.log('[webhook] Running:', pullCmd, 'in', REPO_PATH);
+  exec(pullCmd, { cwd: REPO_PATH }, (err, stdout, stderr) => {
     if (err) {
       console.error('[webhook] git pull failed:', err, stderr || '');
       if (cb) cb();
