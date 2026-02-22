@@ -20,7 +20,7 @@ services:
     restart: unless-stopped
 
   webhook:
-    build: ./webhook
+    image: myopenclawagent-webhook:frozen
     environment:
       - GITHUB_WEBHOOK_SECRET=${GITHUB_WEBHOOK_SECRET:-}
       - REPO_PATH=/repo
