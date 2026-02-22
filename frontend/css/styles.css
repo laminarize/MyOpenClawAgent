@@ -417,6 +417,65 @@ h3 { font-size: 1.25rem; }
 .blog-link { color: var(--primary); font-weight: 600; font-size: 0.875rem; }
 .blog-link:hover { text-decoration: underline; }
 
+/* Coming Soon Container */
+.coming-soon-container {
+    text-align: center;
+    padding: 4rem 2rem;
+    max-width: 700px;
+    margin: 0 auto;
+}
+.coming-soon-icon {
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+}
+.coming-soon-container h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: var(--text);
+}
+.coming-soon-description {
+    color: var(--text-light);
+    font-size: 1.125rem;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+}
+.coming-soon-subtitle {
+    color: var(--text);
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+}
+.coming-soon-list {
+    list-style: none;
+    display: inline-block;
+    text-align: left;
+    margin-bottom: 2rem;
+}
+.coming-soon-list li {
+    color: var(--text-light);
+    padding: 0.5rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+}
+.coming-soon-list li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--primary);
+    font-weight: bold;
+}
+.coming-soon-cta {
+    color: var(--text-light);
+    font-size: 1rem;
+}
+.coming-soon-cta a {
+    color: var(--primary);
+    font-weight: 600;
+}
+.coming-soon-cta a:hover {
+    text-decoration: underline;
+}
+
 /* ===== RESPONSIVE STYLES ===== */
 @media (max-width: 900px) {
     .hero {
