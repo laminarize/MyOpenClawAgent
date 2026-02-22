@@ -15,7 +15,6 @@ services:
       - /var/log/nginx-myopenclawagent:/var/log/nginx
     depends_on:
       - api
-      - webhook
     networks:
       - openclawnet
     restart: unless-stopped
