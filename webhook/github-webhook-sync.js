@@ -33,7 +33,9 @@ function rebuildAndUp(cb) {
   // docker-cli-compose plugin is installed in this container; Docker socket is mounted.
   // Run compose directly with HOST_REPO_PATH as cwd so it finds docker-compose.yml and the correct context.
   const projectName = path.basename(HOST_REPO_PATH);
-  const cmd = `docker compose -p ${projectName} -f docker-compose.yml up -d --build`;
+  // Exclude 'webhook' from the rebuild: running compose up on yourself causes the container
+  // to be killed mid-execution (exit 137), leaving other services stranded.
+  const cmd = `docker compose -p ${projectName} -f docker-compose.yml up -d --build nginx api redis`;
   console.log('[webhook] Running: docker compose up -d --build in', HOST_REPO_PATH);
   exec(cmd, { cwd: REPO_PATH, timeout: 120000 }, (err, stdout, stderr) => {
     if (err) {
