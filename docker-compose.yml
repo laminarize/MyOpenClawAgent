@@ -8,7 +8,7 @@ services:
       - SSL_CERT_FILE=${SSL_CERT_FILE:-/etc/nginx/ssl/fullchain.crt}
       - SSL_KEY_FILE=${SSL_KEY_FILE:-/etc/nginx/ssl/privkey.key}
     volumes:
-      - ./frontend:/var/www/html:ro
+      - ${HOST_REPO_PATH:-.}/frontend:/var/www/html:ro
       # SSL certs: set SSL_CERTS_DIR in .env to your certs directory (not tracked)
       - ${SSL_CERTS_DIR:-./certs}:/etc/nginx/ssl:ro
       # Nginx logs on host so OS-level fail2ban can read them and ban at the firewall
