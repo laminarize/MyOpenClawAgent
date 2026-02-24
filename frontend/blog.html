@@ -138,52 +138,85 @@
                 </div>
 
                 <!-- GOG.md Deep Dive -->
-                <div class="blog-section" id="gog-md-post">
-                    <div class="blog-section-header">
-                        <span class="blog-section-icon">📋</span>
-                        <h2>GOG.md - Agent Configuration Deep Dive</h2>
+                <article id="gog-md-post" style="max-width: 740px; margin: 0 auto; padding: 2rem 1rem;">
+                    
+                    <!-- Title -->
+                    <div style="margin-bottom: 2rem;">
+                        <span style="font-size: 2rem;">📋</span>
+                        <h2 style="font-size: 2.25rem; font-weight: 700; margin-top: 0.5rem; line-height: 1.3;">GOG.md — The Agent Configuration That Makes Everything Work</h2>
+                        <p style="font-size: 1.1rem; color: #666; margin-top: 0.5rem;">Best practices for integrating Google Workspace with AI agents</p>
                     </div>
-                    <div class="blog-content" style="max-width: 800px; margin: 0 auto;">
-                        <p>One of the most powerful integrations for any AI agent is Google Workspace (Gmail, Calendar, Drive). In this post, I'll walk through how I configure my agent to handle these services effectively.</p>
+                    
+                    <hr style="border: none; border-top: 1px solid #eee; margin: 2rem 0;">
+                    
+                    <div style="font-size: 1.1rem; line-height: 1.8; color: #292929;">
                         
-                        <h3>Why GOG.md Matters</h3>
-                        <p>The GOG.md file is a configuration guide that tells my agent how to interact with Google services. It's one of the most important integrations I have, but it can be finicky — OAuth tokens expire, permissions need careful management, and the API has rate limits to consider.</p>
+                        <p style="margin-bottom: 1.5rem;">
+                            One of the most powerful integrations for any AI agent is <strong>Google Workspace</strong> — Gmail, Calendar, Drive, and more. But having the integration isn't enough: you need proper configuration to make it work reliably. That's where <code>GOG.md</code> comes in.
+                        </p>
                         
-                        <h3>Email Threading</h3>
-                        <p>When responding to emails, <strong>always use `--reply-to-message-id`</strong> to keep conversations connected. This ensures replies appear in the correct thread, making it easy for everyone to follow the conversation.</p>
+                        <h3 style="font-size: 1.5rem; font-weight: 600; margin-top: 2.5rem; margin-bottom: 1rem;">Why GOG.md Matters</h3>
+                        <p style="margin-bottom: 1.5rem;">
+                            The GOG.md file is a configuration guide that tells my agent how to interact with Google services. It's <em>one of the most important integrations</em> I have, but it can be finicky — OAuth tokens expire, permissions need careful management, and the API has rate limits to consider.
+                        </p>
                         
-                        <pre style="background: #1e1e1e; color: #d4d4d4; padding: 1rem; border-radius: 8px; overflow-x: auto;"><code># Reply in thread
-gog gmail send --to recipient@example.com --subject "Re: Subject" --body "Reply" --reply-to-message-id &lt;message_id&gt;</code></pre>
+                        <!-- Warning Box -->
+                        <div style="background: #fff8e6; border-left: 4px solid #f0ad4e; padding: 1rem 1.5rem; margin: 1.5rem 0; border-radius: 0 8px 8px 0;">
+                            <strong style="color: #8a6d3b;">⚠️ Pro Tip:</strong> Always handle OAuth token refreshes gracefully. Your agent should notify you when tokens expire rather than silently failing.
+                        </div>
                         
-                        <h3>Calendar Notifications</h3>
-                        <p><strong>Critical:</strong> When creating, modifying, updating, or deleting any meeting with invited attendees, you MUST notify all attendees via email. Don't assume they'll see calendar updates automatically.</p>
+                        <h3 style="font-size: 1.5rem; font-weight: 600; margin-top: 2.5rem; margin-bottom: 1rem;">Email Threading</h3>
+                        <p style="margin-bottom: 1rem;">
+                            When responding to emails, <strong>always use <code>--reply-to-message-id</code></strong> to keep conversations connected. This ensures replies appear in the correct thread.
+                        </p>
                         
-                        <p>This is especially important because:</p>
-                        <ul>
-                            <li>Calendar invites can land in spam</li>
-                            <li>Some users only check calendar on desktop</li>
-                            <li>Email confirmation provides a paper trail</li>
+                        <pre style="background: #1e1e1e; color: #d4d4d4; padding: 1.25rem; border-radius: 8px; overflow-x: auto; margin: 1.5rem 0; font-size: 0.9rem;"><code><span style="color: #6a9955;"># Reply in thread</span>
+gog gmail send <span style="color: #9cdcfe;">--to</span> recipient@example.com \
+  <span style="color: #9cdcfe;">--subject</span> <span style="color: #ce9178;">"Re: Subject"</span> \
+  <span style="color: #9cdcfe;">--body</span> <span style="color: #ce9178;">"Reply message"</span> \
+  <span style="color: #9cdcfe;">--reply-to-message-id</span> &lt;message_id&gt;</code></pre>
+                        
+                        <h3 style="font-size: 1.5rem; font-weight: 600; margin-top: 2.5rem; margin-bottom: 1rem;">Calendar Notifications</h3>
+                        <p style="margin-bottom: 1rem;">
+                            <strong>Critical rule:</strong> When creating, modifying, updating, or deleting any meeting with invited attendees, you <em>must</em> notify all attendees via email.
+                        </p>
+                        
+                        <div style="background: #f0f7ff; border-left: 4px solid #0066cc; padding: 1rem 1.5rem; margin: 1.5rem 0; border-radius: 0 8px 8px 0;">
+                            <strong style="color: #0066cc;">Don't assume attendees will see calendar updates automatically.</strong> Email confirmation provides a paper trail and ensures visibility.
+                        </div>
+                        
+                        <p style="margin-bottom: 1rem;">This is especially important because:</p>
+                        <ul style="margin-bottom: 1.5rem; padding-left: 1.5rem;">
+                            <li style="margin-bottom: 0.5rem;">Calendar invites can land in spam</li>
+                            <li style="margin-bottom: 0.5rem;">Some users only check calendar on desktop</li>
+                            <li style="margin-bottom: 0.5rem;">Email confirmation provides a paper trail</li>
                         </ul>
                         
-                        <h3>Customer Inquiry Alerts</h3>
-                        <p>Any email from the website contact form (subject: <code>NEW WEB CONTACT</code>) is a customer inquiry. These need immediate attention:</p>
-                        <ol>
-                            <li>Read the email content</li>
-                            <li>Alert the owner via their preferred channel</li>
-                            <li>Include customer name, email, and message summary</li>
+                        <h3 style="font-size: 1.5rem; font-weight: 600; margin-top: 2.5rem; margin-bottom: 1rem;">Customer Inquiry Alerts</h3>
+                        <p style="margin-bottom: 1rem;">
+                            Any email from the website contact form (subject: <code>NEW WEB CONTACT</code>) is a customer inquiry. These need <strong>immediate attention</strong>:
+                        </p>
+                        <ol style="margin-bottom: 1.5rem; padding-left: 1.5rem;">
+                            <li style="margin-bottom: 0.5rem;">Read the email content</li>
+                            <li style="margin-bottom: 0.5rem;">Alert the owner via their preferred channel</li>
+                            <li style="margin-bottom: 0.5rem;">Include customer name, email, and message summary</li>
                         </ol>
                         
-                        <h3>Key Takeaways</h3>
-                        <ul>
-                            <li><strong>Always thread replies</strong> — keeps conversations organized</li>
-                            <li><strong>Notify meeting attendees manually</strong> — don't rely on calendar alone</li>
-                            <li><strong>Redact sensitive data</strong> — when sharing examples, remove PII</li>
-                            <li><strong>Handle errors gracefully</strong> — OAuth tokens expire and need refresh</li>
+                        <!-- Pull Quote -->
+                        <blockquote style="border-left: 3px solid #0066cc; padding-left: 1.5rem; margin: 2rem 0; font-size: 1.25rem; font-style: italic; color: #555;">
+                            "The Google integration is incredibly powerful but requires careful configuration. Take time to set up proper error handling and your agent will be a well-oiled machine for communications."
+                        </blockquote>
+                        
+                        <h3 style="font-size: 1.5rem; font-weight: 600; margin-top: 2.5rem; margin-bottom: 1rem;">Key Takeaways</h3>
+                        <ul style="margin-bottom: 1.5rem; padding-left: 1.5rem;">
+                            <li style="margin-bottom: 0.75rem;"><strong>Always thread replies</strong> — keeps conversations organized</li>
+                            <li style="margin-bottom: 0.75rem;"><strong>Notify meeting attendees manually</strong> — don't rely on calendar alone</li>
+                            <li style="margin-bottom: 0.75rem;"><strong>Redact sensitive data</strong> — when sharing examples, remove PII</li>
+                            <li style="margin-bottom: 0.75rem;"><strong>Handle errors gracefully</strong> — OAuth tokens expire and need refresh</li>
                         </ul>
                         
-                        <p>The Google integration is incredibly powerful but requires careful configuration. Take time to set up proper error handling and your agent will be a well-oiled machine for communications.</p>
                     </div>
-                </div>
+                </article>
 
                 <!-- Web Browsing Section -->
                 <div class="blog-section" id="web-browsing">
