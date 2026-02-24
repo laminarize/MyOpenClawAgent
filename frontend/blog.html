@@ -126,6 +126,62 @@
                                 <a href="#" class="blog-link">Coming soon →</a>
                             </div>
                         </article>
+                        <article class="blog-card">
+                            <div class="blog-card-icon">📋</div>
+                            <div class="blog-card-content">
+                                <h3>GOG.md - Agent Configuration</h3>
+                                <p>Best practices for integrating Google services including Gmail threading, calendar notifications, and customer inquiry handling.</p>
+                                <a href="#gog-md-post" class="blog-link">Read more →</a>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+
+                <!-- GOG.md Deep Dive -->
+                <div class="blog-section" id="gog-md-post">
+                    <div class="blog-section-header">
+                        <span class="blog-section-icon">📋</span>
+                        <h2>GOG.md - Agent Configuration Deep Dive</h2>
+                    </div>
+                    <div class="blog-content" style="max-width: 800px; margin: 0 auto;">
+                        <p>One of the most powerful integrations for any AI agent is Google Workspace (Gmail, Calendar, Drive). In this post, I'll walk through how I configure my agent to handle these services effectively.</p>
+                        
+                        <h3>Why GOG.md Matters</h3>
+                        <p>The GOG.md file is a configuration guide that tells my agent how to interact with Google services. It's one of the most important integrations I have, but it can be finicky — OAuth tokens expire, permissions need careful management, and the API has rate limits to consider.</p>
+                        
+                        <h3>Email Threading</h3>
+                        <p>When responding to emails, <strong>always use `--reply-to-message-id`</strong> to keep conversations connected. This ensures replies appear in the correct thread, making it easy for everyone to follow the conversation.</p>
+                        
+                        <pre style="background: #1e1e1e; color: #d4d4d4; padding: 1rem; border-radius: 8px; overflow-x: auto;"><code># Reply in thread
+gog gmail send --to recipient@example.com --subject "Re: Subject" --body "Reply" --reply-to-message-id &lt;message_id&gt;</code></pre>
+                        
+                        <h3>Calendar Notifications</h3>
+                        <p><strong>Critical:</strong> When creating, modifying, updating, or deleting any meeting with invited attendees, you MUST notify all attendees via email. Don't assume they'll see calendar updates automatically.</p>
+                        
+                        <p>This is especially important because:</p>
+                        <ul>
+                            <li>Calendar invites can land in spam</li>
+                            <li>Some users only check calendar on desktop</li>
+                            <li>Email confirmation provides a paper trail</li>
+                        </ul>
+                        
+                        <h3>Customer Inquiry Alerts</h3>
+                        <p>Any email from the website contact form (subject: <code>NEW WEB CONTACT</code>) is a customer inquiry. These need immediate attention:</p>
+                        <ol>
+                            <li>Read the email content</li>
+                            <li>Alert the owner via their preferred channel</li>
+                            <li>Include customer name, email, and message summary</li>
+                        </ol>
+                        
+                        <h3>Key Takeaways</h3>
+                        <ul>
+                            <li><strong>Always thread replies</strong> — keeps conversations organized</li>
+                            <li><strong>Notify meeting attendees manually</strong> — don't rely on calendar alone</li>
+                            <li><strong>Redact sensitive data</strong> — when sharing examples, remove PII</li>
+                            <li><strong>Handle errors gracefully</strong> — OAuth tokens expire and need refresh</li>
+                        </ul>
+                        
+                        <p>The Google integration is incredibly powerful but requires careful configuration. Take time to set up proper error handling and your agent will be a well-oiled machine for communications.</p>
                     </div>
                 </div>
 
