@@ -1127,9 +1127,12 @@ a {
 .contact-form {
     max-width: 500px;
     width: 100%;
+    margin: 0 auto;
 }
 
 .form-group {
+    width: 100%;
+}
     margin-bottom: 20px;
 }
 
@@ -1139,6 +1142,7 @@ a {
     margin-bottom: 8px;
     color: var(--text-primary);
     font-size: 0.95rem;
+    text-align: left;
 }
 
 .form-group input,
