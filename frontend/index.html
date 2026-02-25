@@ -347,30 +347,30 @@
             </div>
         </section>
 
-        <!-- CTA -->
+        <!-- CTA / Contact Form -->
         <section id="contact" class="cta">
             <div class="container">
-                <h2 class="animate-on-scroll">Ready to Build Your Second Brain?</h2>
+                <h2 class="animate-on-scroll">Let's Build Your Second Brain</h2>
                 <p class="animate-on-scroll animate-delay-1">OpenClaw is the operating system. This site demonstrates what's possible when you give an AI agent real tools and persistent memory.</p>
                 <div class="cta-box animate-on-scroll animate-delay-2">
-                    <div class="cta-price">$1,999 <span>one-time</span></div>
-                    <p>Premium installation & setup — done right</p>
-                    <div class="cta-features">
-                        <div class="cta-feature">
-                            <span>✓</span> Full OpenClaw installation
+                    <form class="contact-form" id="contact-form">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" name="name" id="name" required maxlength="100" oninput="updateCharCount('name-count', this.value.length, 100)">
+                            <small class="char-count" id="name-count">0 / 100</small>
                         </div>
-                        <div class="cta-feature">
-                            <span>✓</span> Your tools connected
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required maxlength="100" oninput="updateCharCount('email-count', this.value.length, 100)">
+                            <small class="char-count" id="email-count">0 / 100</small>
                         </div>
-                        <div class="cta-feature">
-                            <span>✓</span> Guardrails configured
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" rows="4" required maxlength="250" oninput="updateCharCount('message-count', this.value.length, 250)"></textarea>
+                            <small class="char-count" id="message-count">0 / 250</small>
                         </div>
-                        <div class="cta-feature">
-                            <span>✓</span> Training & playbook
-                        </div>
-                    </div>
-                    <a href="mailto:josh@myopenclawagent.com" class="btn btn-primary">Book a Strategy Call</a>
-                    <p style="margin-top: 16px; font-size: 0.875rem; color: var(--text-muted);">Or email me directly — George checks this inbox</p>
+                        <button type="submit" class="btn btn-primary btn-block">Book a Strategy Call</button>
+                    </form>
                 </div>
             </div>
         </section>
@@ -462,5 +462,6 @@
             lastScroll = currentScroll;
         });
     </script>
+    <script src="/js/app.js"></script>
 </body>
 </html>
