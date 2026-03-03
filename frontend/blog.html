@@ -3,24 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="GOG.md - Google Workspace Best Practices for AI Agents">
+    <meta name="description" content="Blogs - MyOpenClawAgent | Insights on AI agents, Google Workspace, and web browsing">
     <meta name="author" content="Josh Holtz">
-    <title>GOG.md | MyOpenClawAgent</title>
+    <title>Blogs | MyOpenClawAgent</title>
 
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://myopenclawagent.com/blog.html">
-    <meta property="og:title" content="GOG.md | MyOpenClawAgent">
-    <meta property="og:description" content="Best practices for integrating Google Workspace with AI agents">
+    <meta property="og:title" content="Blogs | MyOpenClawAgent">
+    <meta property="og:description" content="Insights on AI agents, Google Workspace, and web browsing">
     <meta property="og:image" content="https://myopenclawagent.com/img/og-preview.png">
     <meta property="og:site_name" content="MyOpenClawAgent">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="GOG.md | MyOpenClawAgent">
-    <meta name="twitter:description" content="Best practices for integrating Google Workspace with AI agents">
+    <meta name="twitter:title" content="Blogs | MyOpenClawAgent">
+    <meta name="twitter:description" content="Insights on AI agents, Google Workspace, and web browsing">
     <meta name="twitter:image" content="https://myopenclawagent.com/img/og-preview.png">
 
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
     <link rel="stylesheet" href="/css/styles.css">
     <style>
+        .blog-post {
+            margin-bottom: 3rem;
+        }
+        .blog-post-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #e0e0e0;
+        }
+        .blog-post-date {
+            font-size: 0.9rem;
+            color: #888;
+            margin-bottom: 1.5rem;
+        }
         .accordion {
             background: #1e1e1e;
             border-radius: 12px;
@@ -71,7 +85,7 @@
             transition: max-height 0.3s ease-out;
         }
         .accordion.active .accordion-content {
-            max-height: 2000px;
+            max-height: 3000px;
         }
         .accordion-body {
             padding: 0 1.5rem 1.5rem 1.5rem;
@@ -143,6 +157,12 @@
             color: #ffc107;
             margin-top: 0 !important;
         }
+        code {
+            background: #2a2a2a;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
     </style>
 </head>
 <body>
@@ -172,60 +192,77 @@
         <!-- Page Header -->
         <section class="page-header">
             <div class="container">
-                <h1>📋 GOG.md</h1>
-                <p>Best practices for integrating Google Workspace with AI agents</p>
+                <h1>📋 Blogs</h1>
+                <p>Insights and best practices for running AI agents</p>
                 <a href="index.html" class="btn btn-secondary" style="margin-top: 1rem;">← Back to Home</a>
             </div>
         </section>
 
-        <!-- GOG Content -->
+        <!-- Blog Posts -->
         <section class="section">
-            <div class="container" style="max-width: 740px;">
+            <div class="container" style="max-width: 800px;">
                 
-                <article style="color: #e0e0e0;">
+                <!-- Blog Post 1: GOG.md -->
+                <article class="blog-post">
+                    <h2 class="blog-post-title">📧 GOG.md — Google Workspace for AI Agents</h2>
+                    <p class="blog-post-date">Best practices for integrating Google Workspace with AI agents</p>
                     
-                    <p style="font-size: 1.15rem; line-height: 1.8; margin-bottom: 2rem;">
+                    <p style="font-size: 1.15rem; line-height: 1.8; margin-bottom: 2rem; color: #e0e0e0;">
                         One of the most powerful integrations for any AI agent is <strong>Google Workspace</strong> — Gmail, Calendar, Drive, and more. But having the integration isn't enough: you need proper configuration to make it work reliably.
                     </p>
                     
-                    <h2 style="font-size: 1.75rem; font-weight: 600; margin: 2.5rem 0 1rem;">Gmail</h2>
-                    
-                    <h3 style="font-size: 1.35rem; font-weight: 600; margin: 2rem 0 0.75rem;">Sending Emails</h3>
-                    <p style="margin-bottom: 1rem;">Always use <code style="background: var(--bg-tertiary); padding: 2px 8px; border-radius: 4px;">--reply-to-message-id</code> when replying to email threads to keep the conversation connected.</p>
-                    
-                    <pre style="background: #1e1e1e; color: #d4d4d4; padding: 1.25rem; border-radius: 8px; overflow-x: auto; margin: 1rem 0 1.5rem; font-size: 0.9rem; line-height: 1.6;"><code><span style="color: #6a9955;"># Send email</span>
+                    <!-- GOG Accordions -->
+                    <div class="accordion active">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            <div class="accordion-title">
+                                <span>📧</span>
+                                <div>
+                                    <h3>Gmail</h3>
+                                    <p>Sending and reading emails with proper threading</p>
+                                </div>
+                            </div>
+                            <span class="accordion-arrow">▼</span>
+                        </div>
+                        <div class="accordion-content">
+                            <div class="accordion-body">
+                                <h4>Sending Emails</h4>
+                                <p style="margin-bottom: 1rem;">Always use <code>--reply-to-message-id</code> when replying to email threads to keep the conversation connected.</p>
+                                
+                                <pre><code><span style="color: #6a9955;"># Send email</span>
 gog gmail send --to recipient@example.com --subject "Subject" --body "Message"
 
 <span style="color: #6a9955;"># Reply in thread</span>
 gog gmail send --to recipient@example.com --subject <span style="color: #ce9178;">"Re: Subject"</span> --body <span style="color: #ce9178;">"Reply"</span> --reply-to-message-id &lt;message_id&gt;</code></pre>
-                    
-                    <h3 style="font-size: 1.35rem; font-weight: 600; margin: 2rem 0 0.75rem;">Reading Emails</h3>
-                    <pre style="background: #1e1e1e; color: #d4d4d4; padding: 1.25rem; border-radius: 8px; overflow-x: auto; margin: 1rem 0 1.5rem; font-size: 0.9rem; line-height: 1.6;"><code><span style="color: #6a9955;"># Search inbox</span>
+                                
+                                <h4>Reading Emails</h4>
+                                <pre><code><span style="color: #6a9955;"># Search inbox</span>
 gog gmail search <span style="color: #ce9178;">"from:someone@example.com is:unread"</span> --max 10
 
 <span style="color: #6a9955;"># Get specific message</span>
 gog gmail get &lt;message_id&gt;</code></pre>
-                    
-                    <h2 style="font-size: 1.75rem; font-weight: 600; margin: 2.5rem 0 1rem;">Customer Inquiry Alert</h2>
-                    
-                    <div style="background: rgba(255, 107, 74, 0.15); border-left: 4px solid #FF6B4A; padding: 1rem 1.5rem; margin: 1rem 0; border-radius: 0 8px 8px 0;">
-                        <strong>Important:</strong> Any email coming through the website contact form (subject: <code>NEW WEB CONTACT</code>) is a <strong>customer inquiry</strong>.
+                            </div>
+                        </div>
                     </div>
                     
-                    <p style="margin: 1rem 0 0.5rem;">When a new customer inquiry arrives:</p>
-                    <ol style="margin-bottom: 1.5rem; padding-left: 1.5rem; line-height: 1.8;">
-                        <li style="margin-bottom: 0.5rem;">Read the email content</li>
-                        <li style="margin-bottom: 0.5rem;">Send a <strong>Telegram message</strong> to Josh alerting him of the new customer request</li>
-                        <li style="margin-bottom: 0.5rem;">Include the customer's name, email, and message summary</li>
-                    </ol>
-                    
-                    <h2 style="font-size: 1.75rem; font-weight: 600; margin: 2.5rem 0 1rem;">Calendar</h2>
-                    
-                    <div style="background: rgba(255, 107, 74, 0.15); border-left: 4px solid #FF6B4A; padding: 1rem 1.5rem; margin: 1rem 0; border-radius: 0 8px 8px 0;">
-                        <strong>IMPORTANT:</strong> When you create, modify, update, or delete any meeting that has invited attendees, you <strong>MUST</strong> notify all invited attendees via email about the change. Do not assume attendees will see calendar updates automatically.
-                    </div>
-                    
-                    <pre style="background: #1e1e1e; color: #d4d4d4; padding: 1.25rem; border-radius: 8px; overflow-x: auto; margin: 1rem 0 1.5rem; font-size: 0.9rem; line-height: 1.6;"><code><span style="color: #6a9955;"># List events</span>
+                    <div class="accordion">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            <div class="accordion-title">
+                                <span>📅</span>
+                                <div>
+                                    <h3>Calendar</h3>
+                                    <p>Creating and managing calendar events</p>
+                                </div>
+                            </div>
+                            <span class="accordion-arrow">▼</span>
+                        </div>
+                        <div class="accordion-content">
+                            <div class="accordion-body">
+                                <div class="warning-box" style="margin-top: 0;">
+                                    <h4 style="margin-top: 0;">⚠️ Important</h4>
+                                    <p>When you create, modify, update, or delete any meeting that has invited attendees, you <strong>MUST</strong> notify all invited attendees via email about the change. Do not assume attendees will see calendar updates automatically.</p>
+                                </div>
+                                
+                                <pre><code><span style="color: #6a9955;"># List events</span>
 gog calendar events &lt;calendarId&gt; --from 2026-01-01 --to 2026-01-31
 
 <span style="color: #6a9955;"># Create event with attendees</span>
@@ -233,214 +270,252 @@ gog calendar create &lt;calendarId&gt; --summary <span style="color: #ce9178;">"
   --from 2026-01-15T10:00 --to 2026-01-15T11:00 \
   --attendees <span style="color: #ce9178;">"email1@example.com,email2@example.com"</span> \
   --with-meet</code></pre>
+                            </div>
+                        </div>
+                    </div>
                     
-                    <h2 style="font-size: 1.75rem; font-weight: 600; margin: 2.5rem 0 1rem;">Drive</h2>
-                    <pre style="background: #1e1e1e; color: #d4d4d4; padding: 1.25rem; border-radius: 8px; overflow-x: auto; margin: 1rem 0 1.5rem; font-size: 0.9rem; line-height: 1.6;"><code><span style="color: #6a9955;"># Search files</span>
+                    <div class="accordion">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            <div class="accordion-title">
+                                <span>👤</span>
+                                <div>
+                                    <h3>Customer Inquiry Alert</h3>
+                                    <p>How to handle incoming customer requests</p>
+                                </div>
+                            </div>
+                            <span class="accordion-arrow">▼</span>
+                        </div>
+                        <div class="accordion-content">
+                            <div class="accordion-body">
+                                <div class="warning-box" style="margin-top: 0;">
+                                    <h4 style="margin-top: 0;">⚠️ Important</h4>
+                                    <p>Any email coming through the website contact form (subject: <code>NEW WEB CONTACT</code>) is a <strong>customer inquiry</strong>.</p>
+                                </div>
+                                
+                                <p>When a new customer inquiry arrives:</p>
+                                <ol>
+                                    <li>Read the email content</li>
+                                    <li>Send a <strong>Telegram message</strong> to Josh alerting him of the new customer request</li>
+                                    <li>Include the customer's name, email, and message summary</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            <div class="accordion-title">
+                                <span>📁</span>
+                                <div>
+                                    <h3>Drive</h3>
+                                    <p>Searching and managing files in Google Drive</p>
+                                </div>
+                            </div>
+                            <span class="accordion-arrow">▼</span>
+                        </div>
+                        <div class="accordion-content">
+                            <div class="accordion-body">
+                                <pre><code><span style="color: #6a9955;"># Search files</span>
 gog drive search <span style="color: #ce9178;">"filename"</span> --max 10</code></pre>
-                    
-                    <h2 style="font-size: 1.75rem; font-weight: 600; margin: 2.5rem 0 1rem;">Notes</h2>
-                    <ul style="margin-bottom: 1.5rem; padding-left: 1.5rem; line-height: 1.8;">
-                        <li style="margin-bottom: 0.5rem;">Always check for errors and report failures</li>
-                        <li style="margin-bottom: 0.5rem;">Keep responses in thread when applicable</li>
-                    </ul>
-                    
+                            </div>
+                        </div>
+                    </div>
                 </article>
-
+                
                 <hr style="border: none; border-top: 1px solid #333; margin: 3rem 0;">
-
-                <!-- New Blog Post: Web Browsing -->
-                <h2 style="font-size: 1.75rem; font-weight: 600; margin: 2rem 0 1.5rem; color: #e0e0e0;">🕸️ Why OpenClaw Uses a Sandboxed Browser</h2>
                 
-                <!-- Accordion 1: Headless Browser Detection -->
-                <div class="accordion" id="accordion-headless">
-                    <div class="accordion-header" onclick="toggleAccordion(this)">
-                        <div class="accordion-title">
-                            <span>🚫</span>
-                            <div>
-                                <h3>Why VPS Deployment Fails for Web Browsing</h3>
-                                <p>Websites detect headless browsers and block requests — here's why</p>
+                <!-- Blog Post 2: Web Browsing -->
+                <article class="blog-post">
+                    <h2 class="blog-post-title">🕸️ Why OpenClaw Uses a Sandboxed Browser</h2>
+                    <p class="blog-post-date">Why VPS deployment fails and how sandboxed browsing improves security</p>
+                    
+                    <p style="font-size: 1.15rem; line-height: 1.8; margin-bottom: 2rem; color: #e0e0e0;">
+                        One of the most common questions is: <strong>"Can I run OpenClaw on a VPS and use web browsing?"</strong> The answer is yes, but web browsing will likely fail. Here's why — and why the sandboxed approach is actually a security feature.
+                    </p>
+                    
+                    <!-- Web Browsing Accordion 1 -->
+                    <div class="accordion">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            <div class="accordion-title">
+                                <span>🚫</span>
+                                <div>
+                                    <h3>Why VPS Deployment Fails for Web Browsing</h3>
+                                    <p>Websites detect headless browsers and block requests</p>
+                                </div>
                             </div>
+                            <span class="accordion-arrow">▼</span>
                         </div>
-                        <span class="accordion-arrow">▼</span>
-                    </div>
-                    <div class="accordion-content">
-                        <div class="accordion-body">
-                            <p>
-                                One of the most common questions I get is: <strong>"Can I run OpenClaw on a VPS (Virtual Private Server) and use web browsing?"</strong>
-                            </p>
-                            <p>
-                                The short answer is: <strong>Yes, but web browsing will likely fail.</strong> Here's why.
-                            </p>
-                            
-                            <h4>The Headless Browser Problem</h4>
-                            <p>
-                                When you run a browser in a typical server environment (including most VPS setups), it runs in <strong>"headless"</strong> mode — meaning there's no visual display, no window, no graphical interface. The browser operates purely as a background process.
-                            </p>
-                            <p>
-                                Modern websites are increasingly sophisticated at detecting headless browsers. They use techniques like:
-                            </p>
-                            <ul>
-                                <li><strong>User-Agent detection:</strong> Identifying browser signatures that indicate automation</li>
-                                <li><strong>JavaScript execution analysis:</strong> Checking for missing DOM features that real browsers have</li>
-                                <li><strong>Behavioral analysis:</strong> Flagging inhuman navigation patterns</li>
-                                <li><strong>Canvas fingerprinting:</strong> Detecting rendering differences in headless vs. regular browsers</li>
-                            </ul>
-                            
-                            <div class="warning-box">
-                                <h4>⚠️ The Real-World Impact</h4>
-                                <p>When websites detect a headless browser, they don't just show an error — they silently:</p>
+                        <div class="accordion-content">
+                            <div class="accordion-body">
+                                <p>
+                                    When you run a browser in a typical server environment (including most VPS setups), it runs in <strong>"headless"</strong> mode — meaning there's no visual display, no window, no graphical interface. The browser operates purely as a background process.
+                                </p>
+                                <p>
+                                    Modern websites are increasingly sophisticated at detecting headless browsers:
+                                </p>
                                 <ul>
-                                    <li>Return fake or empty data</li>
-                                    <li>Redirect to captcha/verification pages</li>
-                                    <li>Block your IP temporarily or permanently</li>
-                                    <li>Show different pricing or availability than real users see</li>
+                                    <li><strong>User-Agent detection:</strong> Identifying browser signatures that indicate automation</li>
+                                    <li><strong>JavaScript execution analysis:</strong> Checking for missing DOM features that real browsers have</li>
+                                    <li><strong>Behavioral analysis:</strong> Flagging inhuman navigation patterns</li>
+                                    <li><strong>Canvas fingerprinting:</strong> Detecting rendering differences in headless vs. regular browsers</li>
                                 </ul>
-                            </div>
-                            
-                            <h4>Why Local Execution Works</h4>
-                            <p>
-                                When OpenClaw runs on your local machine (or a machine with a display), it uses a <strong>full browser with a visual interface</strong>. This browser:
-                            </p>
-                            <ul>
-                                <li>Has a real window and rendering engine</li>
-                                <li>Executes JavaScript exactly like a regular user would</li>
-                                <li>Appears identical to websites from their perspective</li>
-                                <li>Can pass all anti-bot detection mechanisms</li>
-                            </ul>
-                            
-                            <blockquote>
-                                "The difference between a headless browser and a full browser is the difference between wearing a disguise and having a real face."
-                            </blockquote>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Accordion 2: Security Benefits -->
-                <div class="accordion" id="accordion-security">
-                    <div class="accordion-header" onclick="toggleAccordion(this)">
-                        <div class="accordion-title">
-                            <span>🔒</span>
-                            <div>
-                                <h3>The Security Advantage of Sandboxed Browsing</h3>
-                                <p>How OpenClaw's browser isolation protects your data</p>
-                            </div>
-                        </div>
-                        <span class="accordion-arrow">▼</span>
-                    </div>
-                    <div class="accordion-content">
-                        <div class="accordion-body">
-                            <p>
-                                Beyond avoiding detection, there's a <strong>critically important security reason</strong> why OpenClaw uses a sandboxed, isolated browser rather than giving agents direct access to your data.
-                            </p>
-                            
-                            <h4>The Attack Surface Problem</h4>
-                            <p>
-                                When you give an AI agent direct access to your:
-                            </p>
-                            <ul>
-                                <li>Email account (via IMAP/SMTP)</li>
-                                <li>Calendar (via CalDAV)</li>
-                                <li>File system (via direct paths)</li>
-                                <li>Browser profiles (via extensions)</li>
-                            </ul>
-                            <p>
-                                You're creating a <strong>direct attack path</strong> from whatever the agent interacts with back to your sensitive data.
-                            </p>
-                            
-                            <h4>How OpenClaw's Browser Isolation Works</h4>
-                            <p>
-                                OpenClaw's approach is fundamentally different:
-                            </p>
-                            <ol>
-                                <li><strong>Isolated Browser Instance:</strong> OpenClaw runs a completely separate browser profile, not your regular browser</li>
-                                <li><strong>No Access to Credentials:</strong> The agent can't see your passwords, cookies, or session tokens</li>
-                                <li><strong>Limited Network Access:</strong> The sandbox restricts what the browser can reach</li>
-                                <li><strong>Explicit Actions Only:</strong> Every interaction requires your approval or a specific tool call</li>
-                            </ol>
-                            
-                            <div class="pro-tip">
-                                <h4>💡 Defense in Depth</h4>
-                                <p>Think of it like this:</p>
+                                
+                                <div class="warning-box">
+                                    <h4>The Real-World Impact</h4>
+                                    <p>When websites detect a headless browser, they don't just show an error — they silently:</p>
+                                    <ul>
+                                        <li>Return fake or empty data</li>
+                                        <li>Redirect to captcha/verification pages</li>
+                                        <li>Block your IP temporarily or permanently</li>
+                                        <li>Show different pricing or availability than real users see</li>
+                                    </ul>
+                                </div>
+                                
+                                <h4>Why Local Execution Works</h4>
+                                <p>
+                                    When OpenClaw runs on your local machine (or a machine with a display), it uses a <strong>full browser with a visual interface</strong>. This browser:
+                                </p>
                                 <ul>
-                                    <li><strong>Direct access</strong> = giving someone your house keys</li>
-                                    <li><strong>OpenClaw's browser</strong> = talking to someone through a video doorbell</li>
+                                    <li>Has a real window and rendering engine</li>
+                                    <li>Executes JavaScript exactly like a regular user would</li>
+                                    <li>Appears identical to websites from their perspective</li>
+                                    <li>Can pass all anti-bot detection mechanisms</li>
                                 </ul>
-                                <p>You can see what they're doing, they can communicate with you, but they can't walk into your house.</p>
-                            </div>
-                            
-                            <h4>What This Means in Practice</h4>
-                            <p>
-                                If an agent encounters a malicious website or is tricked into visiting a phishing page:
-                            </p>
-                            <ul>
-                                <li>The attack is <strong>contained</strong> within the sandbox</li>
-                                <li>No access to your real browser's cookies or saved passwords</li>
-                                <li>No access to your local files or system</li>
-                                <li>You can simply <strong>reset</strong> the sandbox if compromised</li>
-                            </ul>
-                            
-                            <blockquote>
-                                "Security isn't about trusting the agent — it's about making trust unnecessary."
-                            </blockquote>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Accordion 3: Best Practices -->
-                <div class="accordion" id="accordion-best-practices">
-                    <div class="accordion-header" onclick="toggleAccordion(this)">
-                        <div class="accordion-title">
-                            <span>✅</span>
-                            <div>
-                                <h3>Best Practices for Web Browsing with OpenClaw</h3>
-                                <p>Get the most out of browser automation while staying secure</p>
+                                
+                                <blockquote>
+                                    "The difference between a headless browser and a full browser is the difference between wearing a disguise and having a real face."
+                                </blockquote>
                             </div>
                         </div>
-                        <span class="accordion-arrow">▼</span>
                     </div>
-                    <div class="accordion-content">
-                        <div class="accordion-body">
-                            <h4>Running OpenClaw</h4>
-                            <ul>
-                                <li><strong>Run locally</strong> — on your laptop, desktop, or home server with a display</li>
-                                <li><strong>Avoid VPS</strong> for web browsing tasks (headless = blocked)</li>
-                                <li><strong>Use Docker with display</strong> ifcontainerizing (map X11 or use --network=host)</li>
-                            </ul>
-                            
-                            <h4>Browser Management</h4>
-                            <ul>
-                                <li>Let OpenClaw manage its own browser profile</li>
-                                <li>Don't share your regular browser profile with OpenClaw</li>
-                            <li>Use the browser tool for complex interactions (not direct file access)</li>
-                            </ul>
-                            
-                            <h4>Security Hygiene</h4>
-                            <ul>
-                                <li>Review what sites you're logged into in the OpenClaw browser</li>
-                                <li>Consider using dedicated accounts for agent-accessible services</li>
-                                <li>Keep OpenClaw updated for the latest security patches</li>
-                            </ul>
-                            
-                            <h4>When Browsing Fails</h4>
-                            <ul>
-                                <li>Check if the site blocks automation (common with: travel sites, ticket sellers, some government sites)</li>
-                                <li>Try alternative approaches: APIs, CLI tools, email-based services</li>
-                                <li>Consider whether the task really needs web browsing or if there's a better tool</li>
-                            </ul>
-                            
-                            <div class="pro-tip">
-                                <h4>💡 Pro Tip: The Right Tool for the Job</h4>
-                                <p>Web browsing is powerful but not always the best approach:</p>
+                    
+                    <!-- Web Browsing Accordion 2 -->
+                    <div class="accordion">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            <div class="accordion-title">
+                                <span>🔒</span>
+                                <div>
+                                    <h3>The Security Advantage of Sandboxed Browsing</h3>
+                                    <p>How OpenClaw's browser isolation protects your data</p>
+                                </div>
+                            </div>
+                            <span class="accordion-arrow">▼</span>
+                        </div>
+                        <div class="accordion-content">
+                            <div class="accordion-body">
+                                <p>
+                                    Beyond avoiding detection, there's a <strong>critically important security reason</strong> why OpenClaw uses a sandboxed, isolated browser rather than giving agents direct access to your data.
+                                </p>
+                                
+                                <h4>The Attack Surface Problem</h4>
+                                <p>
+                                    When you give an AI agent direct access to your:
+                                </p>
                                 <ul>
-                                    <li><strong>Use APIs</strong> when available (faster, more reliable)</li>
-                                    <li><strong>Use CLI tools</strong> for data extraction (gog, gh, etc.)</li>
-                                    <li><strong>Use web fetch</strong> for simple page reads</li>
-                                    <li><strong>Use browser</strong> for complex interactions: forms, logins, dynamic content</li>
+                                    <li>Email account (via IMAP/SMTP)</li>
+                                    <li>Calendar (via CalDAV)</li>
+                                    <li>File system (via direct paths)</li>
+                                    <li>Browser profiles (via extensions)</li>
                                 </ul>
+                                <p>
+                                    You're creating a <strong>direct attack path</strong> from whatever the agent interacts with back to your sensitive data.
+                                </p>
+                                
+                                <h4>How OpenClaw's Browser Isolation Works</h4>
+                                <p>
+                                    OpenClaw's approach is fundamentally different:
+                                </p>
+                                <ol>
+                                    <li><strong>Isolated Browser Instance:</strong> OpenClaw runs a completely separate browser profile, not your regular browser</li>
+                                    <li><strong>No Access to Credentials:</strong> The agent can't see your passwords, cookies, or session tokens</li>
+                                    <li><strong>Limited Network Access:</strong> The sandbox restricts what the browser can reach</li>
+                                    <li><strong>Explicit Actions Only:</strong> Every interaction requires your approval or a specific tool call</li>
+                                </ol>
+                                
+                                <div class="pro-tip">
+                                    <h4>💡 Defense in Depth</h4>
+                                    <p>Think of it like this:</p>
+                                    <ul>
+                                        <li><strong>Direct access</strong> = giving someone your house keys</li>
+                                        <li><strong>OpenClaw's browser</strong> = talking to someone through a video doorbell</li>
+                                    </ul>
+                                    <p>You can see what they're doing, they can communicate with you, but they can't walk into your house.</p>
+                                </div>
+                                
+                                <h4>What This Means in Practice</h4>
+                                <p>
+                                    If an agent encounters a malicious website or is tricked into visiting a phishing page:
+                                </p>
+                                <ul>
+                                    <li>The attack is <strong>contained</strong> within the sandbox</li>
+                                    <li>No access to your real browser's cookies or saved passwords</li>
+                                    <li>No access to your local files or system</li>
+                                    <li>You can simply <strong>reset</strong> the sandbox if compromised</li>
+                                </ul>
+                                
+                                <blockquote>
+                                    "Security isn't about trusting the agent — it's about making trust unnecessary."
+                                </blockquote>
                             </div>
                         </div>
                     </div>
-                </div>
+                    
+                    <!-- Web Browsing Accordion 3 -->
+                    <div class="accordion">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            <div class="accordion-title">
+                                <span>✅</span>
+                                <div>
+                                    <h3>Best Practices for Web Browsing</h3>
+                                    <p>Get the most out of browser automation while staying secure</p>
+                                </div>
+                            </div>
+                            <span class="accordion-arrow">▼</span>
+                        </div>
+                        <div class="accordion-content">
+                            <div class="accordion-body">
+                                <h4>Running OpenClaw</h4>
+                                <ul>
+                                    <li><strong>Run locally</strong> — on your laptop, desktop, or home server with a display</li>
+                                    <li><strong>Avoid VPS</strong> for web browsing tasks (headless = blocked)</li>
+                                    <li><strong>Use Docker with display</strong> if containerizing (map X11 or use --network=host)</li>
+                                </ul>
+                                
+                                <h4>Browser Management</h4>
+                                <ul>
+                                    <li>Let OpenClaw manage its own browser profile</li>
+                                    <li>Don't share your regular browser profile with OpenClaw</li>
+                                    <li>Use the browser tool for complex interactions (not direct file access)</li>
+                                </ul>
+                                
+                                <h4>Security Hygiene</h4>
+                                <ul>
+                                    <li>Review what sites you're logged into in the OpenClaw browser</li>
+                                    <li>Consider using dedicated accounts for agent-accessible services</li>
+                                    <li>Keep OpenClaw updated for the latest security patches</li>
+                                </ul>
+                                
+                                <h4>When Browsing Fails</h4>
+                                <ul>
+                                    <li>Check if the site blocks automation (common with: travel sites, ticket sellers, some government sites)</li>
+                                    <li>Try alternative approaches: APIs, CLI tools, email-based services</li>
+                                    <li>Consider whether the task really needs web browsing or if there's a better tool</li>
+                                </ul>
+                                
+                                <div class="pro-tip">
+                                    <h4>💡 Pro Tip: The Right Tool for the Job</h4>
+                                    <p>Web browsing is powerful but not always the best approach:</p>
+                                    <ul>
+                                        <li><strong>Use APIs</strong> when available (faster, more reliable)</li>
+                                        <li><strong>Use CLI tools</strong> for data extraction (gog, gh, etc.)</li>
+                                        <li><strong>Use web fetch</strong> for simple page reads</li>
+                                        <li><strong>Use browser</strong> for complex interactions: forms, logins, dynamic content</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
 
             </div>
         </section>
