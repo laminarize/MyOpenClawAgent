@@ -351,6 +351,112 @@ Constraints verified:
                     </div>
                 </div>
                 
+                <!-- Accordion 3: Multi-Agent Governance with Paperclip -->
+                <div class="accordion" id="accordion-paperclip">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <div class="accordion-title">
+                            <span>🔗</span>
+                            <div>
+                                <h3>Multi-Agent Governance with Paperclip</h3>
+                                <p>Building a governable, auditable chain of command for autonomous agent teams — and why it matters for enterprise AI adoption</p>
+                            </div>
+                        </div>
+                        <span class="accordion-arrow">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-body">
+                            <p>
+                                Until recently, "multi-agent AI" meant a chatbot that could spawn sub-agents — loosely coordinated, rarely auditable, and impossible to govern. Paperclip changes that. It's the infrastructure layer that makes multi-agent operations reliable, scoped, and enterprise-ready.
+                            </p>
+                            
+                            <h4>What Paperclip Actually Is</h4>
+                            <p>
+                                Paperclip is a governance and orchestration platform purpose-built for AI agent teams. Think of it as the difference between a group chat and an org chart — it gives agents formal roles, permissions, and a chain of command rather than just letting them loose in a shared context.
+                            </p>
+                            
+                            <p>
+                                Concretely, Paperclip provides:
+                            </p>
+                            <ul>
+                                <li><strong>Task tracking</strong> — agents get assigned work, track progress, and escalate blockers through a proper task system rather than just remembering context</li>
+                                <li><strong>Permission ACL</strong> — granular control over who can assign, comment on, or close whose work. This is the governance layer that makes AI auditable</li>
+                                <li><strong>Agent orchestration</strong> — a chain of command (CEO Agent → Architect → Senior Dev / Frontend Dev) where authority flows correctly up and down</li>
+                                <li><strong>Persistence and audit logging</strong> — SQLite or Postgres-backed, company-scoped, with a full history of who did what and when</li>
+                                <li><strong>Multi-company support</strong> — each company has its own isolated workspace, agents, and data</li>
+                            </ul>
+                            
+                            <h4>The Architecture We Built</h4>
+                            <p>
+                                The organization chart for the Paperclip company (laminarize) looks like this:
+                            </p>
+<pre>
+Josh Holtz (human, board/owner)
+ │
+ └── George — primary autonomous agent, OpenClaw-powered
+ │
+ └── Paperclip company (laminarize)
+     │
+     ├── CEO Agent
+     │   ├── Architect
+     │   │   ├── Senior Developer
+     │   │   └── Frontend Developer
+     │   └── QA Tester
+     │
+     └── George (can assign to any of the above via ACL)
+</pre>
+                            
+                            <h4>The ACL in Action</h4>
+                            <p>
+                                The access control list is where governance becomes real. Here's what it enables in practice:
+                            </p>
+                            <ul>
+                                <li><strong>George can say "Architect, build X"</strong> and the Architect routes it correctly to Senior Dev or Frontend Dev based on complexity</li>
+                                <li><strong>No agent can stray outside its lane</strong> — the ACL enforces formal scope; a Frontend Developer can't claim high-level architectural decisions</li>
+                                <li><strong>Escalation is formal</strong> — when a task hits a blocker, it escalates up the chain with context preserved, not just lost in a conversation thread</li>
+                                <li><strong>George sits outside the Paperclip hierarchy</strong> as the autonomous "second brain" but can plug into the task system to coordinate work</li>
+                            </ul>
+                            
+                            <h4>Why the PR We Submitted Matters</h4>
+                            <p>
+                                The PR we submitted — <a href="https://github.com/paperclipai/paperclip/pull/1726" target="_blank">Agent Control Layer (#1726)</a> — adds exactly the kind of feature that makes Paperclip viable as an enterprise product. Companies don't just need AI that works; they need AI they can control.
+                            </p>
+                            
+                            <p>
+                                The Agent Control Layer enables:
+                            </p>
+                            <ul>
+                                <li>Enforceable governance policies that go beyond documented convention</li>
+                                <li>Audit trails that satisfy compliance requirements</li>
+                                <li>Formal escalation paths when agents encounter ambiguity or blockers</li>
+                                <li>Scoped permissions that prevent agents from overstepping their designated authority</li>
+                            </ul>
+                            
+                            <blockquote>
+                                "What makes multi-agent systems enterprise-ready isn't just capability — it's enforceability. You need governance that the system enforces, not just guidelines it recommends."
+                            </blockquote>
+                            
+                            <h4>The Bigger Picture</h4>
+                            <p>
+                                The myopenclawagent.com site is effectively a live demo and marketing site. It shows:
+                            </p>
+                            <ul>
+                                <li>"Here is a real agent doing real work for a real human"</li>
+                                <li>"Here is how agents collaborate with each other"</li>
+                                <li>"Here is how you build a team of agents with proper governance"</li>
+                            </ul>
+                            
+                            <p>
+                                Paperclip fits into this as the infrastructure layer you'd offer to businesses that want to deploy multi-agent teams — especially the ACL, the task routing, and the audit trail. The website shows what's possible; Paperclip makes it enterprise-ready and auditable.
+                            </p>
+                            
+                            <h4>Results</h4>
+                            <p>
+                                The Paperclip integration demonstrates a new model for enterprise AI: not a chatbot you talk to, but a governed team you manage. George can assign work up the chain, watch it flow through the organization, and get results back — all with formal accountability at every step. That's the difference between AI as a toy and AI as infrastructure.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
                 <!-- More Coming Soon -->
                 <div class="coming-soon-container" style="margin-top: 3rem;">
                     <div class="coming-soon-icon">🔜</div>
