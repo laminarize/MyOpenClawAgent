@@ -169,7 +169,78 @@
         <section class="section">
             <div class="container" style="max-width: 800px;">
                 
-                <!-- Accordion 1: Agent Meeting Negotiation -->
+                <!-- Accordion 1: Bot Traffic Analysis -->
+                <div class="accordion" id="accordion-bot-traffic">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <div class="accordion-title">
+                            <span>🛡️</span>
+                            <div>
+                                <h3>Identifying and Blocking Bot Traffic from Server Logs</h3>
+                                <p>Finding coordinated attacks in nginx logs using ASN/owner analysis — not just volume filtering</p>
+                            </div>
+                        </div>
+                        <span class="accordion-arrow">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-body">
+                            <p>
+                                Analyzed an nginx access log with ~2,400 unique IP addresses. Volume-based filtering alone isn't enough — ASN/owner analysis reveals coordinated attack patterns that naive filtering misses.
+                            </p>
+                            
+                            <h4>The Problem</h4>
+                            <p>
+                                The goal was to identify high-confidence bad actors for blocking. Initial pass filtered IPs by request volume (>20 requests) — yielded ~270 IPs. However, this is <strong>naive filtering without threat intelligence verification</strong>.
+                            </p>
+                            <p>
+                                Why volume filtering alone isn't enough: legitimate users can have high request counts, while sophisticated attackers may stay below the threshold.
+                            </p>
+                            
+                            <h4>Threat Intelligence Approach</h4>
+                            <p>
+                                Used <strong>ipinfo.io</strong> for ASN/owner lookups on top offenders. This revealed coordinated attack patterns invisible to simple volume filtering.
+                            </p>
+                            
+                            <div class="warning-box">
+                                <h4>🚨 Coordinated Attack Subnet Discovered</h4>
+                                <p><strong>185.177.72.0/24</strong> (Bucklog SARL, France)</p>
+                                <ul>
+                                    <li>7,000+ requests across 9 IPs</li>
+                                    <li>Clear coordinated botnet signature</li>
+                                </ul>
+                            </div>
+                            
+                            <h4>Known Bad Actor Networks Identified</h4>
+                            <ul>
+                                <li><strong>194.26.192.0/24</strong> — 1337 Services GmbH ("powered.by.rdp.sh" — bulletproof host)</li>
+                                <li><strong>79.127.129.0/24</strong> — Tamatiya EOOD (Bulgaria) — multiple abuse reports</li>
+                                <li><strong>89.248.168.0/24</strong> — IP Volume inc — "no-reverse-dns" — known scanner</li>
+                                <li><strong>87.120.191.0/24</strong> — VPSVAULT.HOST — hosts malicious actors</li>
+                            </ul>
+                            
+                            <h4>Cloud Providers — Ambiguous Signals</h4>
+                            <p>DigitalOcean, Google Cloud, Microsoft Azure, Akamai, Contabo — legitimate infrastructure being used for automated attacks. These could be compromised VMs in botnets or legitimate users with automation.</p>
+                            
+                            <h4>Actions Taken</h4>
+                            <ol>
+                                <li>Generated UFW deny rules for <strong>9 malicious subnets</strong></li>
+                                <li>Excluded <strong>1 false positive</strong> (user's own residential IP)</li>
+                                <li>Left fail2ban to handle dynamic detection from nginx logs</li>
+                            </ol>
+                            
+                            <div class="pro-tip">
+                                <h4>💡 Key Takeaways</h4>
+                                <ul>
+                                    <li><strong>Volume-based filtering alone isn't sufficient</strong> — ASN/owner analysis reveals coordinated patterns</li>
+                                    <li>Coordinated attacks often come from specific subnets, not scattered IPs</li>
+                                    <li><strong>Bulletproof hosting providers</strong> (1337 Services, Tamatiya) are repeat offenders</li>
+                                    <li>Cloud provider IPs are ambiguous — could be compromised VMs or legitimate users</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Accordion 2: Agent Meeting Negotiation -->
                 <div class="accordion" id="accordion-meeting">
                     <div class="accordion-header" onclick="toggleAccordion(this)">
                         <div class="accordion-title">
@@ -248,7 +319,7 @@
                     </div>
                 </div>
                 
-                <!-- Accordion 2: Street Name Generation -->
+                <!-- Accordion 3: Street Name Generation -->
                 <div class="accordion" id="accordion-street-names">
                     <div class="accordion-header" onclick="toggleAccordion(this)">
                         <div class="accordion-title">
@@ -351,7 +422,7 @@ Constraints verified:
                     </div>
                 </div>
                 
-                <!-- Accordion 3: Multi-Agent Governance with Paperclip -->
+                <!-- Accordion 4: Multi-Agent Governance with Paperclip -->
                 <div class="accordion" id="accordion-paperclip">
                     <div class="accordion-header" onclick="toggleAccordion(this)">
                         <div class="accordion-title">
